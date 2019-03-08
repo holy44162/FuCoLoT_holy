@@ -138,7 +138,8 @@ cv::Mat toMat(const mxArray* data, int depth, bool transpose)
     std::vector<int> d(mxdims , mxdims + mxndims);
     int ndims = (d.size()>2) ? d.size()-1 : d.size();
     int nchannels = (d.size()>2) ? *(d.end()-1) : 1;
-    depth = (depth==CV_USRTYPE1) ? DepthOf[classID] : depth;
+    // depth = (depth==CV_USRTYPE1) ? DepthOf[classID] : depth;
+    depth = (depth==7) ? DepthOf[classID] : depth;
     std::swap(d[0], d[1]);
     cv::Mat mat(ndims, &d[0], CV_MAKETYPE(depth, nchannels));
     // Copy each channel.
