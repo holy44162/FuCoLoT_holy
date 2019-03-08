@@ -1,9 +1,13 @@
 function run_on_uav()
 
 % set paths on your machine
-tracker_path = 'E:\workspace\tracking\CSRDCF2\FuCoLoT-github';
-dataset_path = 'E:\datasets\UAV123';
-results_path = 'E:\workspace\tracking\CSRDCF2\FuCoLoT-github\results';
+% tracker_path = 'E:\workspace\tracking\CSRDCF2\FuCoLoT-github';
+% dataset_path = 'E:\datasets\UAV123';
+% results_path = 'E:\workspace\tracking\CSRDCF2\FuCoLoT-github\results';
+
+tracker_path = 'm:\files\computerVision\videoTracking\fucolot';
+dataset_path = 'M:\files\computerVision\videoTracking\dataResultsOftracker_benchmark_v1.1\UAV123_10fps';
+results_path = 'm:\files\computerVision\videoTracking\fucolot\results';
 
 % add paths
 addpath(tracker_path);
@@ -14,18 +18,21 @@ addpath(fullfile(st_path, 'mex'));
 addpath(fullfile(st_path, 'utils'));
 addpath(fullfile(st_path, 'features'));
 
-dataset_type = 'LT';  % LT - long term (UAV20L); 123 - full UAV123
+dataset_type = '123';  % LT - long term (UAV20L); 123 - full UAV123
 
-visualize = false;
+visualize = true;
 save_results = true;
 
-if ~exist(results_path)
+% if ~exist(results_path) % hided by Holy 1903071021
+if exist(results_path, 'dir') ~= 7 % added by Holy 1903071021
     mkdir(results_path);
 end
 
-seq_config = configSeqs(dataset_type, fullfile(dataset_path, 'data_seq\UAV123'));
+% seq_config = configSeqs(dataset_type, fullfile(dataset_path, 'data_seq\UAV123')); % hided by Holy 1903071019
+seq_config = configSeqsNew(fullfile(dataset_path, 'data_seq\UAV123_10fps')); % added by Holy 1903071019
 
-parfor i=1:numel(seq_config)
+% parfor i=1:numel(seq_config) % hided by Holy 1903071100
+for i=1:numel(seq_config) % added by Holy 1903071100
     
     s = seq_config{i};
     fprintf('Processing sequence: %s\n', s.name);
@@ -41,7 +48,8 @@ parfor i=1:numel(seq_config)
     if strcmp(dataset_type, 'LT')
         dataset = 'UAV20L';
     elseif strcmp(dataset_type, '123')
-        dataset = 'UAV123';
+%         dataset = 'UAV123'; % hided by Holy 1903071050
+        dataset = 'UAV123_10fps'; % added by Holy 1903071050
     else
         error('Unknown dataset type. Only LT and 123 supported.');
     end
@@ -105,4 +113,3 @@ end  % endfunction
 function my_save(save_results_path, results)
     dlmwrite(save_results_path, results);
 end  % endfunction
-
