@@ -319,7 +319,8 @@ void fhog( float *M, float *O, float *H, int h, int w, int binSize,
 #ifdef MATLAB_MEX_FILE
 // Create [hxwxd] mxArray array, initialize to 0 if c=true
 mxArray* mxCreateMatrix3( int h, int w, int d, mxClassID id, bool c, void **I ){
-  const int dims[3]={h,w,d}, n=h*w*d; int b; mxArray* M;
+  // const int dims[3]={h,w,d}, n=h*w*d; int b; mxArray* M;
+  const mwSize dims[3]={h,w,d}, n=h*w*d; int b; mxArray* M;
   if( id==mxINT32_CLASS ) b=sizeof(int);
   else if( id==mxDOUBLE_CLASS ) b=sizeof(double);
   else if( id==mxSINGLE_CLASS ) b=sizeof(float);
@@ -333,7 +334,8 @@ mxArray* mxCreateMatrix3( int h, int w, int d, mxClassID id, bool c, void **I ){
 void checkArgs( int nl, mxArray *pl[], int nr, const mxArray *pr[], int nl0,
   int nl1, int nr0, int nr1, int *h, int *w, int *d, mxClassID id, void **I )
 {
-  const int *dims; int nDims;
+  // const int *dims; int nDims; // hided by Holy 190308
+  const mwSize *dims; mwSize nDims;
   if( nl<nl0 || nl>nl1 ) mexErrMsgTxt("Incorrect number of outputs.");
   if( nr<nr0 || nr>nr1 ) mexErrMsgTxt("Incorrect number of inputs.");
   nDims = mxGetNumberOfDimensions(pr[0]); dims = mxGetDimensions(pr[0]);
