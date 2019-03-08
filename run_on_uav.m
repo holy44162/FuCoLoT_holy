@@ -5,9 +5,9 @@ function run_on_uav()
 % dataset_path = 'E:\datasets\UAV123';
 % results_path = 'E:\workspace\tracking\CSRDCF2\FuCoLoT-github\results';
 
-tracker_path = 'm:\files\computerVision\videoTracking\fucolot';
+tracker_path = 'm:\files\computerVision\videoTracking\FuCoLoT_holy';
 dataset_path = 'M:\files\computerVision\videoTracking\dataResultsOftracker_benchmark_v1.1\UAV123_10fps';
-results_path = 'm:\files\computerVision\videoTracking\fucolot\results';
+results_path = 'm:\files\computerVision\videoTracking\FuCoLoT_holy\results';
 
 % add paths
 addpath(tracker_path);
@@ -77,6 +77,7 @@ for i=1:numel(seq_config) % added by Holy 1903071100
     
     % iterate over frames: from second to the end
     for j=s.startFrame+1:s.endFrame
+        tStartFrame = tic; % added by Holy 1903081125
         
         % read image and track frame
         img = imread(fullfile(s.path, sprintf('%06d.%s', j, s.ext)));
@@ -85,10 +86,16 @@ for i=1:numel(seq_config) % added by Holy 1903071100
         bboxes(idx,:) = bb;
         idx = idx + 1;
         
+        % added by Holy 1903081126
+        frameElapsedTime = toc(tStartFrame);
+        fps = 1/frameElapsedTime;
+        % end of addition 1903081126
+        
         if visualize
             imshow(img);
             hold on;
             rectangle('Position',bb, 'LineWidth',2, 'EdgeColor','y');
+            text(10, 10, num2str(fps), 'color', [0 1 1]); % added by Holy 1903081127
             hold off;
             drawnow;
         end
