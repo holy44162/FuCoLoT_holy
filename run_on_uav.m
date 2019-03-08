@@ -58,7 +58,13 @@ for i=1:numel(seq_config) % added by Holy 1903071100
     
     % read first image and initialize tracker
     img = imread(fullfile(s.path, sprintf('%06d.%s', s.startFrame, s.ext)));
-    gt = gt(1, :);
+    % added by Holy 1903081715
+    theta = -0.4;
+    tform = affine2d([cosd(theta) sind(theta) 0;...
+        -sind(theta) cosd(theta) 0; 0 0 1]);
+    img = imwarp(img,tform);
+    % end of addition 1903081715
+    gt = gt(2, :);
     tracker = create_fclt_tracker(img, gt);
     
     % allocate memory for results and store first frame
@@ -81,6 +87,11 @@ for i=1:numel(seq_config) % added by Holy 1903071100
         
         % read image and track frame
         img = imread(fullfile(s.path, sprintf('%06d.%s', j, s.ext)));
+        % added by Holy 1903081715
+        tform = affine2d([cosd(theta) sind(theta) 0;...
+            -sind(theta) cosd(theta) 0; 0 0 1]);
+        img = imwarp(img,tform);
+        % end of addition 1903081715
         [tracker, bb] = track_fclt_tracker(tracker, img);
         % store result
         bboxes(idx,:) = bb;
